@@ -4,30 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4a3a418-b68a-4cfa-be06-e45e5a77e5dd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Action.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/Action.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/collectors.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/generators/CompetitionGenerator.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/generators/CompetitionPlaceGenerator.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/generators/SportsmanGenerator.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/models/Competition$CompetitionResult.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/models/Competition.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/models/CompetitionPlace.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/models/CompetitionTypes.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/models/Sportsman.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/collectors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/collectors.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/generators/CompetitionGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/generators/CompetitionGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/generators/CompetitoinPlaceGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/generators/CompetitionPlaceGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/models/Competition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/models/Competition.java" afterDir="false" />
+    <list default="true" id="c4a3a418-b68a-4cfa-be06-e45e5a77e5dd" name="Changes" comment="Improve Generator">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +46,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "project.propCompiler",
     "vue.rearranger.settings.migration": "true"
   }
@@ -101,8 +80,17 @@
       <option name="presentableId" value="Default" />
       <updated>1728243109304</updated>
       <workItem from="1728243110236" duration="3062000" />
-      <workItem from="1728290816790" duration="4606000" />
+      <workItem from="1728290816790" duration="5016000" />
     </task>
+    <task id="LOCAL-00001" summary="Improve Generator">
+      <option name="closed" value="true" />
+      <created>1728295478275</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728295478275</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -130,6 +118,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Improve Generator" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve Generator" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
