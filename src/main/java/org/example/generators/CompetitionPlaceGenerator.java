@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class CompetitoinPlaceGenerator {
+public class CompetitionPlaceGenerator {
 
     static List<String> cities = Arrays.asList("Москва", "Санкт-Петербург", "Екатеринбург", "Новосибирск", "Казань", "Нижний Новгород", "Челябинск", "Самара", "Ростов-на-Дону", "Уфа", "Красноярск", "Волгоград", "Пермь", "Тюмень", "Иркутск", "Воронеж", "Саратов", "Барнаул", "Тольятти", "Ярославль");
 

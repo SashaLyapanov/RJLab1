@@ -18,8 +18,20 @@ public class Competition {
 
     private List<Sportsman> sportsmanList;
 
-    private record CompetitionResult(String organizatorFIO, String numberOrg,
-                                     String mailOrg, Map<Integer, Sportsman> sportsmanPlace) { }
+    public record CompetitionResult(String organizatorFIO,
+                                     String numberOrg,
+                                     String mailOrg,
+                                     Map<Integer, Sportsman> sportsmanPlace)
+    {
+        public List<String> getWinners(){
+            return sportsmanPlace
+                    .values()
+                    .stream()
+                    .map(Sportsman::getFio)
+                    .limit(3)
+                    .toList();
+        }
+    }
 
     private CompetitionResult result;
 
