@@ -16,7 +16,11 @@ public class Main {
         Action action = new Action(CompetitionGenerator.generate(250000, 500));
         var res1 = action.simpleLoop();
         var res2 = action.streamLoop();
-        System.out.println();
+        var res3 = action.customCollectors();
+        if (res1.equals(res2) && res2.equals(res3)){
+            System.out.println("All result is equals!");
+        }
+        else System.out.println("Results not equals!");
         //Test test  = new Test();
 //        SportsmanGenerator.generateSportsman(250000).stream().forEach(System.out::println);
 //        CompetitionPlaceGenerator.getCompetitionPlaces().stream().forEach(System.out::println);

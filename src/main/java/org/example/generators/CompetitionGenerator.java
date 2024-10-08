@@ -15,7 +15,7 @@ public class CompetitionGenerator {
         List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(countSportsman);
         Random random = new Random();
         for (int i = 0; i < countCompetition; i++) {
-            int spCount = random.nextInt(countSportsman);
+            int spCount = random.nextInt(15, countSportsman);
             Collections.shuffle(sportsmanList);
             competitionList.add(new Competition(UUID.randomUUID(), random.nextInt(2000), LocalDate.now().plusMonths(random.nextInt(1,3)),
                     CompetitionTypes.values()[random.nextInt(2)], sportsmanList.subList(0, spCount), CompetitionPlaceGenerator.getCompetitionPlaces()));
