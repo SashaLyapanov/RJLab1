@@ -30,14 +30,15 @@ public class Action {
 
         List<Competition> competitions = competitionList;
         Map<String, List<Sportsman>> winners = new HashMap<>();
-        competitions.stream()
+        winners = competitions.stream()
                 .collect(java.util.stream.Collectors.toMap(
-                        competition -> competition.getId().toString(),
-                        competition -> competition.getResult().sportsmanPlace().keySet().stream()
-                                .sorted(Comparator.comparingInt(e -> e))
-                                .collect(java.util.stream.Collectors.toList()),
-                        (existing, erplacement) -> existing,
-                        HashMap::new
+//                        competition -> competition.getId().toString(),
+                        competition -> "Победа" + competition.getId().toString(),
+                        competition -> competition.getResult().sportsmanPlace().entrySet().stream()
+                                .sorted(Map.Entry.<Integer, Sportsman>comparingByKey().reversed())
+                                .limit(3)
+                                .map(Map.Entry::getValue)
+                                .collect(java.util.stream.Collectors.toList())
                 ));
         return winners;
     }
@@ -52,5 +53,11 @@ public class Action {
 
     public Action(List<Competition> com){
         competitionList = com;
+    }
+
+    public void soutList() {
+        for (int i = 0; i < competitionList.size(); i++) {
+            System.out.println(competitionList.get(i).toString());
+        }
     }
 }
