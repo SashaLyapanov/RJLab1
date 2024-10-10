@@ -4,6 +4,7 @@ import lombok.Data;
 import org.example.generators.SportsmanGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @Data
@@ -23,14 +24,14 @@ public class Competition {
                                      String mailOrg,
                                      Map<Integer, Sportsman> sportsmanPlace)
     {
-        public List<String> getWinners(){
-            return sportsmanPlace
-                    .values()
-                    .stream()
-                    .map(Sportsman::getFio)
-                    .limit(3)
-                    .toList();
-        }
+//        public List<String> getWinners(){
+//            return sportsmanPlace
+//                    .values()
+//                    .stream()
+//                    .map(Sportsman::getFio)
+//                    .limit(3)
+//                    .toList();
+//        }
     }
 
     private CompetitionResult result;
@@ -53,10 +54,27 @@ public class Competition {
         String mail = fio.substring(0, fio.indexOf(" ")) + random.nextInt(1, 1000) + "@yandex.ru";
         Map<Integer, Sportsman> sportsmanPlace = generatePlaces(sportsmanList);
 
+//        CompetitionResult competitionResult = new CompetitionResult(fio, "8960719" + random.nextInt(10, 100) + random.nextInt(10, 100),
+//                mail, sportsmanPlace);
+
+        Map<Integer, Sportsman> sportsmanPointQuantity = generatePointSportsmans(sportsmanList);
+
         CompetitionResult competitionResult = new CompetitionResult(fio, "8960719" + random.nextInt(10, 100) + random.nextInt(10, 100),
-                mail, sportsmanPlace);
+                mail, sportsmanPointQuantity);
 
         return competitionResult;
+    }
+
+    private Map<Integer, Sportsman> generatePointSportsmans(List<Sportsman> sportsmanList) {
+        List<Sportsman> sportsmanList1 = new ArrayList<>(sportsmanList);
+        Map<Integer, Sportsman> sportsmanMap = new HashMap<>();
+        Random random = new Random();
+        for (int i = 0; i < sportsmanList.size(); i++) {
+            int indexInList = random.nextInt(sportsmanList1.size());
+            sportsmanMap.put(random.nextInt(50, 300), sportsmanList1.get(indexInList));
+            sportsmanList1.remove(indexInList);
+        }
+        return sportsmanMap;
     }
 
     private Map<Integer, Sportsman> generatePlaces(List<Sportsman> sportsmanList) {

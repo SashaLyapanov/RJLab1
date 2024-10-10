@@ -26,7 +26,8 @@ public class Collectors
 
     @Override
     public BiConsumer<Map<String, List<String>>, Competition> accumulator() {
-        return (list, competition) -> list.put(competition.getId().toString(), competition.getResult().getWinners());
+//        return (list, competition) -> list.put(competition.getId().toString(), competition.getResult().getWinners());
+        return null;
     }
 
     @Override

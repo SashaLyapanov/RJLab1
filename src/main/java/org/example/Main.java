@@ -13,16 +13,18 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        Action action = new Action(CompetitionGenerator.generate(250000, 500));
-        var res1 = action.simpleLoop();
-        var res2 = action.streamLoop();
-        var res3 = action.customCollectors();
-        if (res1.equals(res2) && res2.equals(res3)){
-            System.out.println("All result is equals!");
-        }
-        else System.out.println("Results not equals!");
-        //Test test  = new Test();
+//        Action action = new Action(CompetitionGenerator.generate(250000, 500));
+//        var res1 = action.simpleLoop();
+//        var res2 = action.streamLoop();
+//        var res3 = action.customCollectors();
+//        if (res1.equals(res2) && res2.equals(res3)){
+//            System.out.println("All result is equals!");
+//        }
+//        else System.out.println("Results not equals!");
+
 //        SportsmanGenerator.generateSportsman(250000).stream().forEach(System.out::println);
+        CompetitionGenerator.generate(2, 20).stream().forEach(System.out::println);
+
 //        CompetitionPlaceGenerator.getCompetitionPlaces().stream().forEach(System.out::println);
     }
 }
