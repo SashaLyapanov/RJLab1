@@ -21,17 +21,7 @@ public class Competition {
     public record CompetitionResult(String organizatorFIO,
                                      String numberOrg,
                                      String mailOrg,
-                                     Map<Integer, Sportsman> sportsmanPlace)
-    {
-        public List<String> getWinners(){
-            return sportsmanPlace
-                    .values()
-                    .stream()
-                    .map(Sportsman::getFio)
-                    .limit(3)
-                    .toList();
-        }
-    }
+                                     Map<Integer, Sportsman> sportsmanPlace) {}
 
     private CompetitionResult result;
 

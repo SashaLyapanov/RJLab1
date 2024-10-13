@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.models.Competition;
 
+import org.example.models.Sportsman;
 import org.javatuples.Pair;
 
 import java.util.*;
@@ -13,24 +14,34 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 public class Collectors
-        implements Collector<Competition, Map<String, List<String>>, Map<String, List<String>>> {
+        implements Collector<Competition, Map<String, List<Sportsman>>, Map<String, List<Sportsman>>> {
 
     public static Collectors toCollectorMap(){
         return new Collectors();
     }
 
-    @Override
-    public Supplier<Map<String, List<String>>> supplier() {
-        return HashMap<String, List<String>>::new;
+    private List<Sportsman> getWinners(Competition competition){
+        return competition.getResult().sportsmanPlace()
+                .entrySet()
+                .stream()
+                .filter(item -> item.getKey() <= 3)
+                .map(Map.Entry::getValue)
+                .toList();
     }
 
     @Override
-    public BiConsumer<Map<String, List<String>>, Competition> accumulator() {
-        return (list, competition) -> list.put(competition.getId().toString(), competition.getResult().getWinners());
+    public Supplier<Map<String, List<Sportsman>>> supplier() {
+        return HashMap<String, List<Sportsman>>::new;
     }
 
     @Override
-    public BinaryOperator<Map<String, List<String>>> combiner() {
+    public BiConsumer<Map<String, List<Sportsman>>, Competition> accumulator() {
+        return (list, competition) -> list.put(competition.getId().toString(),
+                getWinners(competition));
+    }
+
+    @Override
+    public BinaryOperator<Map<String, List<Sportsman>>> combiner() {
         return (mainList, newList) -> {
             mainList.putAll(newList);
             return mainList;
@@ -38,7 +49,7 @@ public class Collectors
     }
 
     @Override
-    public Function<Map<String, List<String>>, Map<String, List<String>>> finisher() {
+    public Function<Map<String, List<Sportsman>>, Map<String, List<Sportsman>>> finisher() {
         return Collections::unmodifiableMap;
     }
 

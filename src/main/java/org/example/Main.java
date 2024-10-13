@@ -21,8 +21,5 @@ public class Main {
             System.out.println("All result is equals!");
         }
         else System.out.println("Results not equals!");
-        //Test test  = new Test();
-//        SportsmanGenerator.generateSportsman(250000).stream().forEach(System.out::println);
-//        CompetitionPlaceGenerator.getCompetitionPlaces().stream().forEach(System.out::println);
     }
 }
