@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
-public class Sportsman {
+public class Coach {
     private UUID id;
 
     private String fio;
@@ -17,14 +17,12 @@ public class Sportsman {
 
     private String mail;
 
-    private Coach coach;
-
-    public Sportsman(UUID id, String fio, int age, LocalDate birthday, String mail, Coach coach) {
+    public Coach(UUID id, String fio, int age, LocalDate birthday, String mail) {
         this.id = id;
         this.fio = fio;
         this.age = age;
         this.birthday = birthday;
         this.mail = mail;
-        this.coach = coach;
     }
+
 }

@@ -1,13 +1,11 @@
 package org.example.generators;
 
 import org.example.models.Coach;
-import org.example.models.Sportsman;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class SportsmanGenerator {
-
+public class CoachGenerator {
 
     static private List<String> surname = Arrays.asList("Барсуков", "Калачев", "Григорьев", "Баранов",
             "Макаров", "Соколов", "Колесников", "Головин", "Овсянников", "Воронов", "Захаров",
@@ -18,18 +16,16 @@ public class SportsmanGenerator {
 
     static Random random = new Random();
 
-    private static List<Coach> coaches = CoachGenerator.generateCoach(15);
-
-    public static List<Sportsman> generateSportsman(int count) {
-        List<Sportsman> sportsmanList = new ArrayList<>();
+    public static List<Coach> generateCoach(int count) {
+        List<Coach> coacheList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             int indexSurname = random.nextInt(surname.size());
             String fio = generateFIO();
             int age = random.nextInt(15, 55);
             LocalDate birth = LocalDate.now().minusYears(age);
-            sportsmanList.add(new Sportsman(UUID.randomUUID(), fio, age, birth, surname.get(indexSurname) + i + "@mail.ru", coaches.get(random.nextInt(coaches.size()))));
+            coacheList.add(new Coach(UUID.randomUUID(), fio, age, birth, surname.get(indexSurname) + i + "@mail.ru"));
         }
-        return sportsmanList;
+        return coacheList;
     }
 
     public static String generateFIO() {
@@ -38,4 +34,5 @@ public class SportsmanGenerator {
         int indexPatronymic = random.nextInt(NS.size());
         return surname.get(indexSurname) + " " + NS.get(indexName) + ". " + NS.get(indexPatronymic) + ".";
     }
+
 }

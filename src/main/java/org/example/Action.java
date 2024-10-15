@@ -1,63 +1,70 @@
 package org.example;
 
+import org.example.models.Coach;
 import org.example.models.Competition;
-import org.example.Collectors;
 import org.example.models.Sportsman;
-import org.javatuples.Pair;
 
 import java.util.*;
 
 public class Action {
     private List<Competition> competitionList;
 
-    public Map<String, List<String>> simpleLoop(){
-        Map<String, List<String>>finalResult = new HashMap<>();
+    public Map<String, List<Coach>> simpleLoop() {
+        Map<String, List<Coach>> finalResult = new HashMap<>();
         var start = System.currentTimeMillis();
-        for (var item: competitionList){
-//           finalResult.put(item.getId().toString(), item.getResult().getWinners());
+        for (Competition competition : competitionList) {
+            List<Sportsman> sportsmanList;
+            List<Coach> coachList = new ArrayList<>();
+            List<Coach> coachListWithoutDuplicates = new ArrayList<>();
+            sportsmanList = competition.getSportsmanList();
+            for (Sportsman sportsman : sportsmanList) {
+                coachList.add(sportsman.getCoach());
+            }
+            for (Coach coach : coachList) {
+                if (!coachListWithoutDuplicates.contains(coach)) {
+                    coachListWithoutDuplicates.add(coach);
+                }
+            }
+            finalResult.put(competition.getId().toString(), coachListWithoutDuplicates);
+//            System.out.println("coachList");
+//            System.out.println(coachList);
+//            System.out.println(coachList.size());
+//            System.out.println("coachListWithoutDuplicates");
+//            System.out.println(coachListWithoutDuplicates);
+//            System.out.println(coachListWithoutDuplicates.size());
         }
-        System.out.println("Итерационный цикл: " + (System.currentTimeMillis() - start) + "mc" );
+        System.out.println("Итерационный цикл: " + (System.currentTimeMillis() - start) + "mc");
+//        return null;
         return finalResult;
     }
 
-    public Map<String, List<Sportsman>> streamLoop() {
-//        Map<String, List<String>> finalResult = new HashMap<>();
-//        var start = System.currentTimeMillis();
-//        competitionList.stream()
-//                .forEach(item -> finalResult.put(item.getId().toString(), item.getResult().getWinners()));
-//        System.out.println("Stream : " + (System.currentTimeMillis() - start) + "mc" );
-//        return finalResult;
-
-        List<Competition> competitions = competitionList;
-        Map<String, List<Sportsman>> winners = new HashMap<>();
-        winners = competitions.stream()
+    public Map<String, List<Coach>> streamLoop() {
+        Map<String, List<Coach>> finalResult;
+        var start = System.currentTimeMillis();
+        finalResult = competitionList.stream()
                 .collect(java.util.stream.Collectors.toMap(
-//                        competition -> competition.getId().toString(),
-                        competition -> "Победа" + competition.getId().toString(),
-                        competition -> competition.getResult().sportsmanPlace().entrySet().stream()
-                                .sorted(Map.Entry.<Integer, Sportsman>comparingByKey().reversed())
-                                .limit(3)
-                                .map(Map.Entry::getValue)
+                        competition -> competition.getId().toString(),
+                        competition -> competition.getSportsmanList().stream()
+                                .map(Sportsman::getCoach)
+                                .distinct()
                                 .collect(java.util.stream.Collectors.toList())
                 ));
-        return winners;
-    }
-
-    public  Map<String, List<String>> customCollectors(){
-        var start = System.currentTimeMillis();
-        Map<String, List<String>> finalResult = competitionList.stream()
-                .collect(Collectors.toCollectorMap());
-        System.out.println("Custom Collector : " + (System.currentTimeMillis() - start) + "ms" );
+        System.out.println("Стримы: " + (System.currentTimeMillis() - start) + "mc");
+//        return null;
         return finalResult;
     }
 
-    public Action(List<Competition> com){
-        competitionList = com;
+    public Map<String, List<Coach>> customCollectors() {
+        Map<String, List<Coach>> finalResult;
+        var start = System.currentTimeMillis();
+        finalResult = competitionList.stream()
+                .collect(new CustomCollector());
+        System.out.println("Custom Collector : " + (System.currentTimeMillis() - start) + "ms");
+//        return null;
+        return finalResult;
     }
 
-    public void soutList() {
-        for (int i = 0; i < competitionList.size(); i++) {
-            System.out.println(competitionList.get(i).toString());
-        }
+    public Action(List<Competition> competitionList) {
+        this.competitionList = competitionList;
     }
 }
