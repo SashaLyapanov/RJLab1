@@ -18,8 +18,10 @@ public class Competition {
 
     private List<Sportsman> sportsmanList;
 
-    private record CompetitionResult(String organizatorFIO, String numberOrg,
-                                     String mailOrg, Map<Integer, Sportsman> sportsmanPlace) { }
+    public record CompetitionResult(String organizatorFIO,
+                                     String numberOrg,
+                                     String mailOrg,
+                                     Map<Integer, Sportsman> sportsmanPlace) {}
 
     private CompetitionResult result;
 
