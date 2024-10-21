@@ -21,6 +21,8 @@ public class CustomCollector implements Collector<Competition, Map<String, List<
     public CustomCollector(long delay) {
         this.delay = delay;
     }
+    public CustomCollector() {
+    }
 
     @Override
     public Supplier<Map<String, List<Coach>>> supplier() {
