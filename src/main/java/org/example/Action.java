@@ -9,6 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
+import org.openjdk.jmh.annotations.*;
+
+
 public class Action {
     private List<Competition> competitionList;
 
@@ -51,7 +54,7 @@ public class Action {
                             .collect(Collectors.toList());
                     finalResult.put(key, coaches);
                 });
-        System.out.println("Стримы параллельно: " + (System.currentTimeMillis() - start) + "mc");
+//        System.out.println("Стримы параллельно: " + (System.currentTimeMillis() - start) + "mc");
         return finalResult;
     }
 
@@ -69,11 +72,12 @@ public class Action {
                                 .collect(Collectors.toList());
                         finalResult.put(key, coaches);
                     });
-        System.out.println("Стримы последовательно: " + (System.currentTimeMillis() - start) + "mc");
+//        System.out.println("Стримы последовательно: " + (System.currentTimeMillis() - start) + "mc");
         return finalResult;
     }
 
 //    //Реализация streamLoop() через ForkJoinPool
+
     public Map<String, List<Coach>> forkJoinPoolStreamLoop() {
         Map<String, List<Coach>> finalResult;
         ForkJoinPool forkJoinPool = new ForkJoinPool(8);
