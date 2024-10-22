@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Action {
     private List<Competition> competitionList;
 
-    private long delay = 10;
+    private long delay = -1; //10;
 
 //    public Map<String, List<Coach>> simpleLoop() {
 //        Map<String, List<Coach>> finalResult = new HashMap<>();
@@ -92,7 +92,7 @@ public class Action {
 //    }
 
     //параллельно
-    public Map<String, List<Coach>> customCollectors() {
+    public Map<String, List<Coach>> customCollectorsParallel() {
         Map<String, List<Coach>> finalResult;
         var start = System.currentTimeMillis();
         finalResult = competitionList.parallelStream()
@@ -103,7 +103,7 @@ public class Action {
     }
 
     //последовательно
-    public Map<String, List<Coach>> customCollectors1() {
+    public Map<String, List<Coach>> customCollectorsSequence() {
         Map<String, List<Coach>> finalResult;
         var start = System.currentTimeMillis();
         finalResult = competitionList.stream()

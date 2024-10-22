@@ -38,10 +38,12 @@ public class Competition {
     }
 
     public List<Sportsman> getSportsmanList(long delay) {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        if (delay >= 0) {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
         return this.sportsmanList;
     }
