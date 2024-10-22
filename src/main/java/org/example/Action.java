@@ -26,15 +26,8 @@ public class Action {
                 }
             }
             finalResult.put(competition.getId().toString(), coachListWithoutDuplicates);
-//            System.out.println("coachList");
-//            System.out.println(coachList);
-//            System.out.println(coachList.size());
-//            System.out.println("coachListWithoutDuplicates");
-//            System.out.println(coachListWithoutDuplicates);
-//            System.out.println(coachListWithoutDuplicates.size());
         }
         System.out.println("Итерационный цикл: " + (System.currentTimeMillis() - start) + "mc");
-//        return null;
         return finalResult;
     }
 
@@ -50,7 +43,6 @@ public class Action {
                                 .collect(java.util.stream.Collectors.toList())
                 ));
         System.out.println("Стримы: " + (System.currentTimeMillis() - start) + "mc");
-//        return null;
         return finalResult;
     }
 
@@ -60,7 +52,6 @@ public class Action {
         finalResult = competitionList.stream()
                 .collect(new CustomCollector());
         System.out.println("Custom Collector : " + (System.currentTimeMillis() - start) + "ms");
-//        return null;
         return finalResult;
     }
 
