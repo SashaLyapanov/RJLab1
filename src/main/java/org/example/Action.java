@@ -85,7 +85,7 @@ public class Action {
 
         finalResult = forkJoinPool.invoke(new CustomForkJoinPool(competitionList));
 
-        System.out.println("ForkJoinPool: " + (System.currentTimeMillis() - start) + "mc");
+//        System.out.println("ForkJoinPool: " + (System.currentTimeMillis() - start) + "mc");
         return finalResult;
     }
 
