@@ -11,30 +11,32 @@ public class StartWork {
     private Action actionFork;
     private Action actionSequence;
     private Action actionParallel;
+
+    private Action allTest;
     @Setup
     public void setup(){
-        actionFork = new Action(CompetitionGenerator.generate(60000, 500));
-        actionSequence = new Action(CompetitionGenerator.generate(35000, 500));
-        actionParallel = new Action(CompetitionGenerator.generate(40000, 500));
+//        actionFork = new Action(CompetitionGenerator.generate(80000, 500));
+//        actionSequence = new Action(CompetitionGenerator.generate(35000, 500));
+//        actionParallel = new Action(CompetitionGenerator.generate(40000, 500));
+        allTest = new Action(CompetitionGenerator.generate(300000, 500));
     }
 
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @OutputTimeUnit(TimeUnit.SECONDS)
     public void ForkPool() {
-        Map forkPool = actionFork.forkJoinPoolStreamLoop();
+        Map forkPool = allTest.forkJoinPoolStreamLoop();
     }
 
+//    @Benchmark
+//    @OutputTimeUnit(TimeUnit.SECONDS)
+//    public void ParallelStream() {
+//        Map res2parallel = allTest.streamLoopParallel();
+//    }
+//
     @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public void parallelStream() {
-        Map res2parallel = actionParallel.streamLoopParallel();
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    public void SequenceStream() {
+        Map res2posled = allTest.streamLoopSequence();
     }
-
-    @Benchmark
-    @OutputTimeUnit(TimeUnit.MILLISECONDS)
-    public void sequenceStream() {
-        Map res2posled = actionSequence.streamLoopSequence();
-    }
-
-    public StartWork(){}
+//    public StartWork(){}
 }

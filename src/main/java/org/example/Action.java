@@ -43,15 +43,14 @@ public class Action {
     //параллельно
     public Map<String, List<Coach>> streamLoopParallel() {
         Map<String, List<Coach>> finalResult = new ConcurrentHashMap<>();
-        var start = System.currentTimeMillis();
+//        var start = System.currentTimeMillis();
         competitionList.parallelStream()
                 .forEach(competition -> {
                     String key = competition.getId().toString();
 //                    List<Coach> coaches = competition.getSportsmanList(delay).parallelStream()
-                    List<Coach> coaches = competition.getSportsmanList().parallelStream()
+                    List<Coach> coaches = new ArrayList<>(competition.getSportsmanList().parallelStream()
                             .map(Sportsman::getCoach)
-                            .distinct()
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toSet()));
                     finalResult.put(key, coaches);
                 });
 //        System.out.println("Стримы параллельно: " + (System.currentTimeMillis() - start) + "mc");
@@ -61,15 +60,14 @@ public class Action {
     //последовательно
     public Map<String, List<Coach>> streamLoopSequence() {
         Map<String, List<Coach>> finalResult = new ConcurrentHashMap<>();
-        var start = System.currentTimeMillis();
+//        var start = System.currentTimeMillis();
         competitionList.stream()
                     .forEach(competition -> {
                         String key = competition.getId().toString();
 //                        List<Coach> coaches = competition.getSportsmanList(delay).stream()
-                        List<Coach> coaches = competition.getSportsmanList().stream()
+                        List<Coach> coaches = new ArrayList<>(competition.getSportsmanList().stream()
                                 .map(Sportsman::getCoach)
-                                .distinct()
-                                .collect(Collectors.toList());
+                                .collect(Collectors.toSet()));
                         finalResult.put(key, coaches);
                     });
 //        System.out.println("Стримы последовательно: " + (System.currentTimeMillis() - start) + "mc");
@@ -80,12 +78,12 @@ public class Action {
 
     public Map<String, List<Coach>> forkJoinPoolStreamLoop() {
         Map<String, List<Coach>> finalResult;
-        ForkJoinPool forkJoinPool = new ForkJoinPool(8);
-        var start = System.currentTimeMillis();
+        ForkJoinPool forkJoinPool = new ForkJoinPool(2);
+//        var start = System.currentTimeMillis();
 
         finalResult = forkJoinPool.invoke(new CustomForkJoinPool(competitionList));
 
-        System.out.println("ForkJoinPool: " + (System.currentTimeMillis() - start) + "mc");
+//        System.out.println("ForkJoinPool: " + (System.currentTimeMillis() - start) + "mc");
         return finalResult;
     }
 
