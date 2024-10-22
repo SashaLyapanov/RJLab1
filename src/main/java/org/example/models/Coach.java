@@ -24,5 +24,4 @@ public class Coach {
         this.birthday = birthday;
         this.mail = mail;
     }
-
 }

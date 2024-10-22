@@ -34,5 +34,4 @@ public class CoachGenerator {
         int indexPatronymic = random.nextInt(NS.size());
         return surname.get(indexSurname) + " " + NS.get(indexName) + ". " + NS.get(indexPatronymic) + ".";
     }
-
 }

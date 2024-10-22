@@ -7,8 +7,6 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class SportsmanGenerator {
-
-
     static private List<String> surname = Arrays.asList("Барсуков", "Калачев", "Григорьев", "Баранов",
             "Макаров", "Соколов", "Колесников", "Головин", "Овсянников", "Воронов", "Захаров",
             "Никифоров", "Миронов", "Любимов", "Назаров", "Воронков", "Евдокимов", "Шишкин", "Корнеев", "Краснов",
