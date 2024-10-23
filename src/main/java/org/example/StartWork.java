@@ -18,7 +18,7 @@ public class StartWork {
 //        actionFork = new Action(CompetitionGenerator.generate(80000, 500));
 //        actionSequence = new Action(CompetitionGenerator.generate(35000, 500));
 //        actionParallel = new Action(CompetitionGenerator.generate(40000, 500));
-        allTest = new Action(CompetitionGenerator.generate(300000, 500));
+        allTest = new Action(CompetitionGenerator.generate(400000, 500));
     }
 
     @Benchmark
