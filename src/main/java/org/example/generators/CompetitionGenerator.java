@@ -1,5 +1,7 @@
 package org.example.generators;
 
+import io.reactivex.rxjava3.core.BackpressureStrategy;
+import io.reactivex.rxjava3.core.Flowable;
 import org.example.models.Competition;
 import org.example.models.CompetitionTypes;
 import org.example.models.Sportsman;
@@ -23,6 +25,16 @@ public class CompetitionGenerator {
             //System.out.println("Iteration :" + i);
         }
         return competitionList;
+    }
+
+    public static Flowable<List<Competition>> generateFlowable(int countCompetition, int countSportsman) {
+        Random random = new Random();
+        return Flowable.create(emitter -> {
+            var sportsmanFlow = SportsmanGenerator.generateSportsmanFlowable(countSportsman);
+            for (int i = 0; i < countCompetition; i++) {
+                int spCount = random.nextInt(15, countSportsman);
+            }
+        }, BackpressureStrategy.BUFFER);
     }
 }
 

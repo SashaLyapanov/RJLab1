@@ -1,5 +1,7 @@
 package org.example;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.example.models.Coach;
 import org.example.models.Competition;
 import org.example.models.Sportsman;
@@ -9,37 +11,38 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
-import org.openjdk.jmh.annotations.*;
+import org.example.rx.CustomSubscriber;
 
 
 public class Action {
-    private List<Competition> competitionList;
+    private final List<Competition> competitionList;
 
-    private long delay = -1; //10;
-
-//    public Map<String, List<Coach>> simpleLoop() {
-//        Map<String, List<Coach>> finalResult = new HashMap<>();
-//        var start = System.currentTimeMillis();
-//        for (Competition competition : competitionList) {
-//            List<Sportsman> sportsmanList;
-//            List<Coach> coachList = new ArrayList<>();
-//            List<Coach> coachListWithoutDuplicates = new ArrayList<>();
-//            sportsmanList = competition.getSportsmanList(delay);
-//
-//            for (Sportsman sportsman : sportsmanList) {
-//                coachList.add(sportsman.getCoach());
-//            }
-//            for (Coach coach : coachList) {
-//                if (!coachListWithoutDuplicates.contains(coach)) {
-//                    coachListWithoutDuplicates.add(coach);
-//                }
-//            }
-//            finalResult.put(competition.getId().toString(), coachListWithoutDuplicates);
-//        }
-//        System.out.println("Итерационный цикл: " + (System.currentTimeMillis() - start) + "mc");
-//        return finalResult;
-//    }
-
+    private final long delay = -1; //10;
+    
+    // rx
+    public Map<String, List<Coach>> rxReleaseMet(){
+        Map<String, List<Coach>> res = new ConcurrentHashMap<>();
+        Observable<List<Competition>> competitionObservable = Observable.just(competitionList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+        competitionObservable
+                .flatMap(Observable::fromIterable)
+                .collect(Collectors.toMap(
+                        competition -> competition.getId().toString(),
+                        competition -> new ArrayList<>(competition.getSportsmanList(delay)
+                                .stream()
+                                .map(Sportsman::getCoach)
+                                .collect(Collectors.toSet())),
+                        (key1, key2) -> key1,
+                        ConcurrentHashMap::new)
+                )
+                .blockingSubscribe(
+                        res::putAll,
+                        Throwable::printStackTrace
+                );
+        return res;
+    }
+    
     //параллельно
     public Map<String, List<Coach>> streamLoopParallel() {
 //        var start = System.currentTimeMillis();

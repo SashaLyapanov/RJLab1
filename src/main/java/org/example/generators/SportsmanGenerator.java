@@ -1,5 +1,7 @@
 package org.example.generators;
 
+import io.reactivex.rxjava3.core.BackpressureStrategy;
+import io.reactivex.rxjava3.core.Flowable;
 import org.example.models.Coach;
 import org.example.models.Sportsman;
 
@@ -37,5 +39,20 @@ public class SportsmanGenerator {
         int indexName = random.nextInt(NS.size());
         int indexPatronymic = random.nextInt(NS.size());
         return surname.get(indexSurname) + " " + NS.get(indexName) + ". " + NS.get(indexPatronymic) + ".";
+    }
+
+    public static Flowable<Sportsman> generateSportsmanFlowable(int count) {
+        return Flowable.create(emitter -> {
+            for (int i = 0; i < count; i++) {
+                int indexSurname = random.nextInt(surname.size());
+                String fio = generateFIO();
+                int age = random.nextInt(15, 55);
+                LocalDate birth = LocalDate.now().minusYears(age);
+                emitter.onNext(new Sportsman(UUID.randomUUID(),
+                        fio, age, birth,
+                        surname.get(indexSurname) + i + "@mail.ru",
+                        coaches.get(random.nextInt(coaches.size()))));
+            }
+        }, BackpressureStrategy.BUFFER);
     }
 }

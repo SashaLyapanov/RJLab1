@@ -38,5 +38,11 @@ public class StartWork {
     public void SequenceStream() {
         Map res2posled = allTest.streamLoopSequence();
     }
-//    public StartWork(){}
+    public StartWork(){}
+
+//    @Benchmark
+//    @OutputTimeUnit(TimeUnit.SECONDS)
+//    public void RxJavaMethod(){
+//        Map rxRes = allTest.rxReleaseMet();
+//    }
 }
