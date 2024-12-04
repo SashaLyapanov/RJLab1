@@ -6,7 +6,7 @@ import org.example.generators.SportsmanGenerator;
 import java.time.LocalDate;
 import java.util.*;
 
-@Data
+//@Data
 public class Competition {
     private UUID id;
 
@@ -35,6 +35,62 @@ public class Competition {
         this.sportsmanList = sportsmanList;
         this.place = place;
         this.result = generateResult(sportsmanList);
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public int getStartPay() {
+        return startPay;
+    }
+
+    public void setStartPay(int startPay) {
+        this.startPay = startPay;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public CompetitionTypes getCompetitionTypes() {
+        return competitionTypes;
+    }
+
+    public void setCompetitionTypes(CompetitionTypes competitionTypes) {
+        this.competitionTypes = competitionTypes;
+    }
+
+    public List<Sportsman> getSportsmanList() {
+        return sportsmanList;
+    }
+
+    public void setSportsmanList(List<Sportsman> sportsmanList) {
+        this.sportsmanList = sportsmanList;
+    }
+
+    public CompetitionResult getResult() {
+        return result;
+    }
+
+    public void setResult(CompetitionResult result) {
+        this.result = result;
+    }
+
+    public CompetitionPlace getPlace() {
+        return place;
+    }
+
+    public void setPlace(CompetitionPlace place) {
+        this.place = place;
     }
 
     public List<Sportsman> getSportsmanList(long delay) {
