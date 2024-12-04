@@ -18,31 +18,59 @@ public class Action {
     private final List<Competition> competitionList;
 
     private final long delay = 3; //10;
-    
+
     // rx
-    public Map<String, List<Coach>> rxReleaseMet(){
+//    public Map<String, List<Coach>> rxReleaseMet(){
+//        var start = System.currentTimeMillis();
+//        Map<String, List<Coach>> res = new ConcurrentHashMap<>();
+//        Observable<List<Competition>> competitionObservable = Observable.just(competitionList)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.computation());
+//        competitionObservable
+//                .doOnNext((e)->System.out.println(Thread.currentThread().getName()))
+//                .flatMap(Observable::fromIterable)
+//                .map(competition -> new AbstractMap.SimpleEntry<>(
+//                        competition.getId().toString(),
+//                        competition.getSportsmanList(delay).stream()
+//                                .map(Sportsman::getCoach)
+//                                .distinct()
+//                                .collect(Collectors.toList())
+//                ))
+//                .toList()
+//                .subscribe(
+//                        value -> {
+//                            System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc, Size: " + value.size());
+//                        },
+//                        Throwable::printStackTrace
+//                );
+////        System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc");
+//        return res;
+//    }
+
+    //rxNEW
+    public Map<String, List<Coach>> rxReleaseMet() {
         var start = System.currentTimeMillis();
         Map<String, List<Coach>> res = new ConcurrentHashMap<>();
-        Observable<List<Competition>> competitionObservable = Observable.just(competitionList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation());
+        Observable<Competition> competitionObservable = Observable.fromIterable(competitionList);
         competitionObservable
-                .flatMap(Observable::fromIterable)
-                .map(competition -> new AbstractMap.SimpleEntry<>(
-                        competition.getId().toString(),
-                        competition.getSportsmanList().stream()
-                                .map(Sportsman::getCoach)
-                                .distinct()
-                                .collect(Collectors.toList())
-                ))
+                .flatMap(competition -> Observable.just(competition)
+                        .subscribeOn(Schedulers.io())
+                        .map(val -> new AbstractMap.SimpleEntry<>(
+                                val.getId().toString(),
+                                Observable.fromIterable(val.getSportsmanList(delay))
+                                        .flatMap(sport -> Observable.just(sport).observeOn(Schedulers.computation()))
+                                        .map(Sportsman::getCoach)
+                                        .distinct()
+//                                        .collect(Collectors.toSet())
+                                        .toList()
+                        )))
                 .toList()
-                .subscribe(
+                .blockingSubscribe(
                         value -> {
                             System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc, Size: " + value.size());
                         },
                         Throwable::printStackTrace
                 );
-//        System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc");
         return res;
     }
 
@@ -64,10 +92,10 @@ public class Action {
                 )
                 .collect(
                         Collectors.toMap(
-                            AbstractMap.SimpleEntry::getKey,
-                            AbstractMap.SimpleEntry::getValue,
-                            (key1, key2) -> key1, // выбор значения при конфликте ключей
-                            ConcurrentHashMap::new
+                                AbstractMap.SimpleEntry::getKey,
+                                AbstractMap.SimpleEntry::getValue,
+                                (key1, key2) -> key1, // выбор значения при конфликте ключей
+                                ConcurrentHashMap::new
                         )
                 )
                 .blockingSubscribe(
@@ -82,7 +110,7 @@ public class Action {
                         }
                 );
     }
-    
+
     //параллельно
     public void streamLoopParallel() {
         var start = System.currentTimeMillis();

@@ -37,28 +37,28 @@ public class Main {
 
 
 
-//        int Count = 1000;
-//        int sportCount = 400;
-//        List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
-//        Random random = new Random();
-//        @NonNull Flowable<Object> competitionFlow = Flowable.create(emitter -> {
-//            for(int i = 0; i < Count; i++){
-//                int spCount = random.nextInt(15, sportCount);
-//                Collections.shuffle(sportsmanList);
-//                emitter.onNext(
-//                       new Competition(UUID.randomUUID(), random.nextInt(2000),
-//                               LocalDate.now().plusMonths(random.nextInt(1,3)),
-//                               CompetitionTypes.values()[random.nextInt(2)],
-//                               sportsmanList.subList(0, spCount),
-//                               CompetitionPlaceGenerator.getCompetitionPlaces()));
-//            }
-//        }, BackpressureStrategy.BUFFER)
-//                .subscribeOn(Schedulers.io());
-//
-//        competitionFlow.observeOn(Schedulers.computation())
-//                .subscribe((Consumer<? super Object>) new CustomSubscriber());
+        int Count = 1000;
+        int sportCount = 400;
+        List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
+        Random random = new Random();
+        @NonNull Flowable<Object> competitionFlow = Flowable.create(emitter -> {
+            for(int i = 0; i < Count; i++){
+                int spCount = random.nextInt(15, sportCount);
+                Collections.shuffle(sportsmanList);
+                emitter.onNext(
+                       new Competition(UUID.randomUUID(), random.nextInt(2000),
+                               LocalDate.now().plusMonths(random.nextInt(1,3)),
+                               CompetitionTypes.values()[random.nextInt(2)],
+                               sportsmanList.subList(0, spCount),
+                               CompetitionPlaceGenerator.getCompetitionPlaces()));
+            }
+        }, BackpressureStrategy.BUFFER)
+                .subscribeOn(Schedulers.io());
 
-        Action Test1 = new Action(CompetitionGenerator.generate(500, 500));
+        competitionFlow.observeOn(Schedulers.computation())
+                .subscribe((e) -> new CustomSubscriber());
+
+        Action Test1 = new Action(CompetitionGenerator.generate(50, 500));
         Action Test2 = new Action(CompetitionGenerator.generate(2000, 500));
 
         Test2.streamLoopParallel();
