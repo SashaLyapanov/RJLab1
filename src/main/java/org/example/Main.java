@@ -24,36 +24,55 @@ import java.util.concurrent.Flow;
 
 public class Main {
     public static void main(String[] args) throws RunnerException {
-        Options options = new OptionsBuilder()
-                .include(StartWork.class.getSimpleName())
-                .forks(1)
-                .build();
+//        Options options = new OptionsBuilder()
+//                .include(StartWork.class.getSimpleName())
+//                .forks(1)
+//                .build();
+//
+//        new Runner(options).run();
 
-        new Runner(options).run();
 
 
-        int Count = 1000;
-        int sportCount = 400;
-        List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
-        Random random = new Random();
-        @NonNull Flowable<Object> competitionFlow = Flowable.create(emitter -> {
-            for(int i = 0; i < Count; i++){
-                int spCount = random.nextInt(15, sportCount);
-                Collections.shuffle(sportsmanList);
-                emitter.onNext(
-                       new Competition(UUID.randomUUID(), random.nextInt(2000),
-                               LocalDate.now().plusMonths(random.nextInt(1,3)),
-                               CompetitionTypes.values()[random.nextInt(2)],
-                               sportsmanList.subList(0, spCount),
-                               CompetitionPlaceGenerator.getCompetitionPlaces()));
-            }
-        }, BackpressureStrategy.BUFFER)
-                .subscribeOn(Schedulers.io());
 
-        competitionFlow.observeOn(Schedulers.computation())
-                .subscribe((Consumer<? super Object>) new CustomSubscriber());
 
-//        Action actionFork = new Action(CompetitionGenerator.generate(250000, 500));
+
+
+//        int Count = 1000;
+//        int sportCount = 400;
+//        List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
+//        Random random = new Random();
+//        @NonNull Flowable<Object> competitionFlow = Flowable.create(emitter -> {
+//            for(int i = 0; i < Count; i++){
+//                int spCount = random.nextInt(15, sportCount);
+//                Collections.shuffle(sportsmanList);
+//                emitter.onNext(
+//                       new Competition(UUID.randomUUID(), random.nextInt(2000),
+//                               LocalDate.now().plusMonths(random.nextInt(1,3)),
+//                               CompetitionTypes.values()[random.nextInt(2)],
+//                               sportsmanList.subList(0, spCount),
+//                               CompetitionPlaceGenerator.getCompetitionPlaces()));
+//            }
+//        }, BackpressureStrategy.BUFFER)
+//                .subscribeOn(Schedulers.io());
+//
+//        competitionFlow.observeOn(Schedulers.computation())
+//                .subscribe((Consumer<? super Object>) new CustomSubscriber());
+
+        Action Test1 = new Action(CompetitionGenerator.generate(500, 500));
+        Action Test2 = new Action(CompetitionGenerator.generate(2000, 500));
+
+        Test2.streamLoopParallel();
+        Test2.forkJoinPoolStreamLoop();
+        Test2.rxReleaseMet();
+//        Test2.streamLoopSequenceRx();
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
 //        Action actionParallel = new Action(CompetitionGenerator.generate(250000, 500));
 //        Map res1 = action.simpleLoop();
 //
