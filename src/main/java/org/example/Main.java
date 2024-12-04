@@ -31,6 +31,7 @@ public class Main {
 
         new Runner(options).run();
 
+
         int Count = 1000;
         int sportCount = 400;
         List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
