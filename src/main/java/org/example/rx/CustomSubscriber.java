@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class CustomSubscriber extends ResourceSubscriber<List<Competition>> {
+public class CustomSubscriber extends ResourceSubscriber<Competition> {
     private static final int DATA_PACKAGE = 10;
     private int currentElementNumber = 0;
 
@@ -22,21 +22,18 @@ public class CustomSubscriber extends ResourceSubscriber<List<Competition>> {
     }
 
     @Override
-    public void onNext(@NonNull List<Competition> competitions) {
+    public void onNext(@NonNull Competition competitions) {
         currentElementNumber++;
 
-        competitions.parallelStream()
-                .collect(Collectors.toMap(
-                        competition -> competition.getId().toString(),
-                        competition -> new ArrayList<>(competition.getSportsmanList()
-                                .stream()
-                                .map(Sportsman::getCoach)
-                                .collect(Collectors.toSet())),
-                        (key1, key2) -> key1,
-                        ConcurrentHashMap::new)
-                );
+        var tmpId = competitions.getId().toString();
+        var tmpCoach = competitions.getSportsmanList()
+                .stream()
+                .map(Sportsman::getCoach).distinct().collect(Collectors.toCollection(ArrayList::new));
+
+        System.out.println("Current element: " + currentElementNumber);
 
         if(currentElementNumber % DATA_PACKAGE == 0){
+            System.out.println("Request data");
             request(DATA_PACKAGE);
         }
     }
@@ -48,6 +45,6 @@ public class CustomSubscriber extends ResourceSubscriber<List<Competition>> {
 
     @Override
     public void onComplete() {
-
+        System.out.println("Completed!!");
     }
 }

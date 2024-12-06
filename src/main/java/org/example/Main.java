@@ -1,9 +1,7 @@
 package org.example;
 
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.BackpressureStrategy;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.core.*;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.example.generators.CompetitionGenerator;
@@ -32,38 +30,34 @@ public class Main {
 //        new Runner(options).run();
 
 
+//        CustomSubscriber customSubscriber = new CustomSubscriber();
+//        int Count = 200000;
+//        int sportCount = 400;
+//        List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
+//        Random random = new Random();
+//        @NonNull Flowable<Competition> competitionFlow = Flowable.create(emitter -> {
+//            for (int i = 0; i < Count; i++) {
+//                int spCount = random.nextInt(15, sportCount);
+//                Collections.shuffle(sportsmanList);
+//                emitter.onNext(
+//                        new Competition(UUID.randomUUID(), random.nextInt(2000),
+//                                LocalDate.now().plusMonths(random.nextInt(1,3)),
+//                                CompetitionTypes.values()[random.nextInt(2)],
+//                                sportsmanList.subList(0, spCount),
+//                                CompetitionPlaceGenerator.getCompetitionPlaces())
+//                );
+//            }
+//        }, BackpressureStrategy.BUFFER);
+//
+//        competitionFlow.observeOn(Schedulers.computation())
+//                .subscribe(customSubscriber);
 
-
-
-
-
-        int Count = 1000;
-        int sportCount = 400;
-        List<Sportsman> sportsmanList = SportsmanGenerator.generateSportsman(sportCount);
-        Random random = new Random();
-        @NonNull Flowable<Object> competitionFlow = Flowable.create(emitter -> {
-            for(int i = 0; i < Count; i++){
-                int spCount = random.nextInt(15, sportCount);
-                Collections.shuffle(sportsmanList);
-                emitter.onNext(
-                       new Competition(UUID.randomUUID(), random.nextInt(2000),
-                               LocalDate.now().plusMonths(random.nextInt(1,3)),
-                               CompetitionTypes.values()[random.nextInt(2)],
-                               sportsmanList.subList(0, spCount),
-                               CompetitionPlaceGenerator.getCompetitionPlaces()));
-            }
-        }, BackpressureStrategy.BUFFER)
-                .subscribeOn(Schedulers.io());
-
-        competitionFlow.observeOn(Schedulers.computation())
-                .subscribe((e) -> new CustomSubscriber());
-
-        Action Test1 = new Action(CompetitionGenerator.generate(50, 500));
-        Action Test2 = new Action(CompetitionGenerator.generate(2000, 500));
-
-        Test2.streamLoopParallel();
-        Test2.forkJoinPoolStreamLoop();
-        Test2.rxReleaseMet();
+//        Action Test1 = new Action(CompetitionGenerator.generate(50, 500));
+//        Action Test2 = new Action(CompetitionGenerator.generate(2000, 500));
+//
+//        Test2.streamLoopParallel();
+//        Test2.forkJoinPoolStreamLoop();
+//        Test2.rxReleaseMet();
 //        Test2.streamLoopSequenceRx();
 
         try {

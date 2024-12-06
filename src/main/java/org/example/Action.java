@@ -53,17 +53,14 @@ public class Action {
         Map<String, List<Coach>> res = new ConcurrentHashMap<>();
         Observable<Competition> competitionObservable = Observable.fromIterable(competitionList);
         competitionObservable
-                .flatMap(competition -> Observable.just(competition)
-                        .subscribeOn(Schedulers.io())
-                        .map(val -> new AbstractMap.SimpleEntry<>(
-                                val.getId().toString(),
-                                Observable.fromIterable(val.getSportsmanList(delay))
-                                        .flatMap(sport -> Observable.just(sport).observeOn(Schedulers.computation()))
+                .flatMap(competition -> Observable.fromCallable(() ->
+                        new AbstractMap.SimpleEntry<>(
+                                competition.getId().toString(),
+                                competition.getSportsmanList(delay).stream()
                                         .map(Sportsman::getCoach)
-                                        .distinct()
-//                                        .collect(Collectors.toSet())
-                                        .toList()
-                        )))
+                                        .collect(Collectors.toSet())
+                        ))
+                                .subscribeOn(Schedulers.io()), 200)
                 .toList()
                 .blockingSubscribe(
                         value -> {
