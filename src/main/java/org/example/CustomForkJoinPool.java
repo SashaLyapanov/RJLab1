@@ -25,7 +25,7 @@ public class CustomForkJoinPool extends RecursiveTask<ConcurrentHashMap<String, 
             return competitionList.parallelStream()
                     .collect(Collectors.toMap(
                             competition -> competition.getId().toString(),
-                            competition -> new ArrayList<>(competition.getSportsmanList()
+                            competition -> new ArrayList<>(competition.getSportsmanList(3)
                                     .stream()
                                     .map(Sportsman::getCoach)
                                     .collect(Collectors.toSet())),

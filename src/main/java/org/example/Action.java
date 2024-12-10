@@ -8,6 +8,8 @@ import org.example.models.Sportsman;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
@@ -19,74 +21,27 @@ public class Action {
 
     private final long delay = 3; //10;
 
-    // rx
-//    public Map<String, List<Coach>> rxReleaseMet(){
-//        var start = System.currentTimeMillis();
-//        Map<String, List<Coach>> res = new ConcurrentHashMap<>();
-//        Observable<List<Competition>> competitionObservable = Observable.just(competitionList)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.computation());
-//        competitionObservable
-//                .doOnNext((e)->System.out.println(Thread.currentThread().getName()))
-//                .flatMap(Observable::fromIterable)
-//                .map(competition -> new AbstractMap.SimpleEntry<>(
-//                        competition.getId().toString(),
-//                        competition.getSportsmanList(delay).stream()
-//                                .map(Sportsman::getCoach)
-//                                .distinct()
-//                                .collect(Collectors.toList())
-//                ))
-//                .toList()
-//                .subscribe(
-//                        value -> {
-//                            System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc, Size: " + value.size());
-//                        },
-//                        Throwable::printStackTrace
-//                );
-////        System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc");
-//        return res;
-//    }
+    //RX
+    ExecutorService executor = Executors.newFixedThreadPool(256);
 
-    //rxNEW, реализованный на паре
-//    public Map<String, List<Coach>> rxReleaseMet() {
-//        var start = System.currentTimeMillis();
-//        Map<String, List<Coach>> res = new ConcurrentHashMap<>();
-//        Observable<Competition> competitionObservable = Observable.fromIterable(competitionList);
-//        competitionObservable
-//                .flatMap(competition -> Observable.fromCallable(() ->
-//                        new AbstractMap.SimpleEntry<>(
-//                                competition.getId().toString(),
-//                                competition.getSportsmanList(delay).stream()
-//                                        .map(Sportsman::getCoach)
-//                                        .collect(Collectors.toSet())
-//                        ))
-//                                .subscribeOn(Schedulers.io()), 200)
-//                .toList()
-//                .blockingSubscribe(
-//                        value -> {
-//                            System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc, Size: " + value.size());
-//                        },
-//                        Throwable::printStackTrace
-//                );
-//        return res;
-//    }
-
-    //попытки оптимизации
     public Map<String, List<Coach>> rxReleaseMet() {
         var start = System.currentTimeMillis();
         Map<String, List<Coach>> res = new ConcurrentHashMap<>();
         Observable<Competition> competitionObservable = Observable.fromIterable(competitionList);
         competitionObservable
                 .subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.computation())
-                .map(competition -> Observable.fromCallable(() ->
-                                new AbstractMap.SimpleEntry<>(
-                                        competition.getId().toString(),
-                                        competition.getSportsmanList(delay).stream()
-                                                .map(Sportsman::getCoach)
-                                                .collect(Collectors.toSet())
-                                ))
-//                        .subscribeOn(Schedulers.io()))
+                .observeOn(Schedulers.computation())
+                .flatMap(competition -> Observable.fromCallable(() -> {
+//                .map(competition -> Observable.fromCallable(() -> {
+//                                    System.out.println("THREAD " + Thread.currentThread().getName());
+                                    return new AbstractMap.SimpleEntry<>(
+                                            competition.getId().toString(),
+                                            competition.getSportsmanList(delay).stream()
+                                                    .map(Sportsman::getCoach)
+                                                    .collect(Collectors.toSet())
+                                    );
+                                })
+                                .subscribeOn(Schedulers.from(executor))
                 )
                 .toList()
                 .blockingSubscribe(
@@ -141,7 +96,7 @@ public class Action {
         var res = competitionList.parallelStream()
                 .collect(Collectors.toMap(
                         competition -> competition.getId().toString(),
-                        competition -> new ArrayList<>(competition.getSportsmanList()
+                        competition -> new ArrayList<>(competition.getSportsmanList(delay)
                                 .stream()
                                 .map(Sportsman::getCoach)
                                 .collect(Collectors.toSet())),

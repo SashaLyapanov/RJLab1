@@ -52,12 +52,12 @@ public class Main {
 //        competitionFlow.observeOn(Schedulers.computation())
 //                .subscribe(customSubscriber);
 
-//        Action Test1 = new Action(CompetitionGenerator.generate(50, 500));
-//        Action Test2 = new Action(CompetitionGenerator.generate(2000, 500));
+        Action Test1 = new Action(CompetitionGenerator.generate(50, 500));
+        Action Test2 = new Action(CompetitionGenerator.generate(2000, 500));
 //
-//        Test2.streamLoopParallel();
-//        Test2.forkJoinPoolStreamLoop();
-//        Test2.rxReleaseMet();
+        Test2.streamLoopParallel();
+        Test2.forkJoinPoolStreamLoop();
+        Test2.rxReleaseMet();
 //        Test2.streamLoopSequenceRx();
 
         try {
