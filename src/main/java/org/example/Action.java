@@ -47,20 +47,47 @@ public class Action {
 //        return res;
 //    }
 
-    //rxNEW
+    //rxNEW, реализованный на паре
+//    public Map<String, List<Coach>> rxReleaseMet() {
+//        var start = System.currentTimeMillis();
+//        Map<String, List<Coach>> res = new ConcurrentHashMap<>();
+//        Observable<Competition> competitionObservable = Observable.fromIterable(competitionList);
+//        competitionObservable
+//                .flatMap(competition -> Observable.fromCallable(() ->
+//                        new AbstractMap.SimpleEntry<>(
+//                                competition.getId().toString(),
+//                                competition.getSportsmanList(delay).stream()
+//                                        .map(Sportsman::getCoach)
+//                                        .collect(Collectors.toSet())
+//                        ))
+//                                .subscribeOn(Schedulers.io()), 200)
+//                .toList()
+//                .blockingSubscribe(
+//                        value -> {
+//                            System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc, Size: " + value.size());
+//                        },
+//                        Throwable::printStackTrace
+//                );
+//        return res;
+//    }
+
+    //попытки оптимизации
     public Map<String, List<Coach>> rxReleaseMet() {
         var start = System.currentTimeMillis();
         Map<String, List<Coach>> res = new ConcurrentHashMap<>();
         Observable<Competition> competitionObservable = Observable.fromIterable(competitionList);
         competitionObservable
-                .flatMap(competition -> Observable.fromCallable(() ->
-                        new AbstractMap.SimpleEntry<>(
-                                competition.getId().toString(),
-                                competition.getSportsmanList(delay).stream()
-                                        .map(Sportsman::getCoach)
-                                        .collect(Collectors.toSet())
-                        ))
-                                .subscribeOn(Schedulers.io()), 200)
+                .subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.computation())
+                .map(competition -> Observable.fromCallable(() ->
+                                new AbstractMap.SimpleEntry<>(
+                                        competition.getId().toString(),
+                                        competition.getSportsmanList(delay).stream()
+                                                .map(Sportsman::getCoach)
+                                                .collect(Collectors.toSet())
+                                ))
+//                        .subscribeOn(Schedulers.io()))
+                )
                 .toList()
                 .blockingSubscribe(
                         value -> {
