@@ -103,7 +103,7 @@ public class Action {
                         (key1, key2) -> key1,
                         ConcurrentHashMap::new)
                 );
-        System.out.println("Реактивный метод: " + (System.currentTimeMillis() - start) + "mc");
+        System.out.println("ParallelStreem: " + (System.currentTimeMillis() - start) + "mc");
     }
 
     //последовательно
